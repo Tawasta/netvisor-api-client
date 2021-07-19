@@ -3,7 +3,7 @@ import decimal
 import pytest
 
 from netvisor_api_client.exc import InvalidData
-from tests.utils import get_response_content
+from tests.utils import get_request_content, get_response_content
 
 
 class TestProductService(object):
@@ -157,3 +157,27 @@ class TestProductService(object):
                 'unit_price': decimal.Decimal('1.96'),
             }
         ]
+
+    def test_create_with_minimal_data(self, netvisor, responses):
+        responses.add(
+            method='POST',
+            url='http://koulutus.netvisor.fi/Product.nv?method=add',
+            body=get_response_content('ProductCreate.xml'),
+            content_type='text/html; charset=utf-8',
+            match_querystring=True
+        )
+        netvisor_id = netvisor.products.create({
+            'product_base_information': {
+                'product_group': u'Kirjat',
+                'name': u'Code Complete',
+                'unit_price': {'amount': decimal.Decimal(42.5), 'type': 'brutto'},
+                'is_active': True,
+                'is_sales_product': False,
+            },
+            'product_bookkeeping_details': {
+                'default_vat_percentage': 24,
+            }
+        })
+        request = responses.calls[0].request
+        assert netvisor_id == 8
+        assert request.body == get_request_content('ProductMinimal.xml')
