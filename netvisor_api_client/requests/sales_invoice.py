@@ -80,3 +80,4 @@ class MatchCreditNoteRequest(Request):
     uri = 'matchcreditnote.nv'
     response_cls = MatchCreditNoteResponse
     schema_cls = SalesInvoiceMatchCreditNoteSchema
+    tag_name = 'match_credit_note'
