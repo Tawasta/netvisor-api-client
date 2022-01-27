@@ -21,8 +21,8 @@ class SalesPaymentSchema(Schema):
     date = FinnishDate()
     sum = Decimal()
     foreign_currency_amount = Decimal(allow_none=True)
-    reference_number = fields.String()
-    invoice_number = fields.Integer()
+    reference_number = fields.String(allow_none=True)
+    invoice_number = fields.Integer(allow_none=True)
     bank_status = fields.String()
     bank_status_error_description = fields.Nested(
         BankStatusErrorDescriptionSchema
