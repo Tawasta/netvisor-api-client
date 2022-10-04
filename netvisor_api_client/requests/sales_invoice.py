@@ -35,6 +35,7 @@ class GetSalesInvoiceRequest(Request):
         )
 
     def parse_response(self, response):
+        raise InvalidData(response.text)
         try:
             result = super(GetSalesInvoiceRequest, self).parse_response(response=response)
 
